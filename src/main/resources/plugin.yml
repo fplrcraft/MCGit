@@ -2,6 +2,17 @@ name: MCGit
 version: ${project.version}
 main: me.ranzeplay.mcgit.Main
 api-version: 1.13
-prefix: [MCGit]
+prefix: MCGit
 authors: [Play_D]
 description: A backup plugin for Minecraft running on Spigot server
+
+commands:
+  mcgit:
+    description: Plugin command of MCGit
+    usage: /mcgit
+    aliases:
+      - mg
+      - mcg
+      - git
+      - mgit
+    permission-message: You don't have permission to do that!
