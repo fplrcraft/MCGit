@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MCGit">
+    <output-path>$PROJECT_DIR$/out/artifacts/MCGit</output-path>
+    <properties id="ant-postprocessing">
+      <options enabled="true" />
+    </properties>
+    <root id="archive" name="MCGit.jar">
+      <element id="module-output" name="MCGit" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/config.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/plugin.yml" />
+    </root>
+  </artifact>
+</component>

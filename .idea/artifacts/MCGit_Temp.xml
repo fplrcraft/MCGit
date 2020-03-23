@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MCGit-Temp">
+    <output-path>$PROJECT_DIR$/../BuildTools/plugins</output-path>
+    <root id="archive" name="MCGit.jar">
+      <element id="module-output" name="MCGit" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/config.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/plugin.yml" />
+    </root>
+  </artifact>
+</component>

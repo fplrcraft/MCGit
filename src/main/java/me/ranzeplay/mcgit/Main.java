@@ -30,8 +30,7 @@ public final class Main extends JavaPlugin {
     private void initialPluginFiles() {
         saveDefaultConfig();
 
-        File path = getDataFolder();
-        File backupFolder = new File(path + "\\Backups");
+        File backupFolder = Constants.BackupFolder;
         if (!backupFolder.exists()) backupFolder.mkdirs();
     }
 }
