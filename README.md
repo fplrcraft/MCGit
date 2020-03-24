@@ -1,3 +1,3 @@
 # MCGit
 
-A backup plugin like Git for Minecraft Spigot server
+A backup plugin like Git mode for Minecraft Spigot server
