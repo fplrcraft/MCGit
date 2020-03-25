@@ -1,4 +1,4 @@
-package me.ranzeplay.mcgit.Zip;
+package me.ranzeplay.mcgit.managers.zip;
 
 import me.ranzeplay.mcgit.Constants;
 import me.ranzeplay.mcgit.Main;
@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 
 public class ZipManager {
     public static void zipWorld(String worldName, boolean zipNether, boolean zipTheEnd, String backupId) throws Exception {
-        File destinationDirectory = new File(Constants.BackupFolder + "\\" + backupId);
+        File destinationDirectory = new File(Constants.BackupDirectory + "\\" + backupId);
         if (!destinationDirectory.exists()) destinationDirectory.mkdirs();
 
         File serverRootDirectory = (Main.Instance.getDataFolder().getParentFile().getAbsoluteFile()).getParentFile();

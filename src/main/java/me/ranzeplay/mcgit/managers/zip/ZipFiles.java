@@ -1,4 +1,4 @@
-package me.ranzeplay.mcgit.Zip;
+package me.ranzeplay.mcgit.managers.zip;
 
 import java.io.File;
 import java.io.FileInputStream;
