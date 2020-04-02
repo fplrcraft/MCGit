@@ -70,12 +70,12 @@ public class RollbackCommand {
 
         Commit commit = GitManager.getCommit(commitId);
 
-        ZipManager.unzipWorldFromBackup(commit.getWorld().getName(), commitId);
+        ZipManager.unzipWorldFromBackup(commit.getWorld().getName(), commitId.replace("-", ""));
 
-        restartApplication();
+        restartMinecraftServer();
     }
 
-    private static void restartApplication() {
+    private static void restartMinecraftServer() {
         final File currentJar = new File(new File(new File(System.getProperty("user.dir")).getAbsolutePath()) + "\\" + Main.Instance.getConfig().getString("serverJarFileName"));
         // System.out.println(currentJar.getAbsolutePath());
 

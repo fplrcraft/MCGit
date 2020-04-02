@@ -40,9 +40,10 @@ public class ZipManager {
         File serverRootDirectory = (Main.Instance.getDataFolder().getParentFile().getAbsoluteFile()).getParentFile();
         File worldRootDirectory = new File(serverRootDirectory + "\\" + worldName);
 
-        // Delete directory recursively
-        // FileUtils.deleteDirectory(worldRootDirectory);
+        // Delete world directory recursively
         deleteDirectory(worldRootDirectory.getAbsolutePath());
+
+        UnzipFiles.UnzipToDirectory(new File(Constants.BackupDirectory.getAbsolutePath() + "\\" + backupId + "\\" + (backupId + "-" + worldName + ".zip")), new File(serverRootDirectory.getAbsolutePath() + "\\" + worldName));
     }
 
     private static void deleteDirectory(String path) {
