@@ -1,13 +1,11 @@
 package me.ranzeplay.mcgit;
 
-import me.ranzeplay.mcgit.commands.CommandCompleter;
 import me.ranzeplay.mcgit.commands.CommandExec;
 import me.ranzeplay.mcgit.managers.config.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public final class Main extends JavaPlugin {
 
@@ -23,8 +21,8 @@ public final class Main extends JavaPlugin {
             e.printStackTrace();
         }
 
-        Objects.requireNonNull(Bukkit.getPluginCommand("mcgit")).setExecutor(new CommandExec());
-        Objects.requireNonNull(Bukkit.getPluginCommand("mcgit")).setTabCompleter(new CommandCompleter());
+        Bukkit.getPluginCommand("mcgit").setExecutor(new CommandExec());
+        // Objects.requireNonNull(Bukkit.getPluginCommand("mcgit")).setTabCompleter(new CommandCompleter());
     }
 
     @Override
@@ -35,8 +33,8 @@ public final class Main extends JavaPlugin {
     private void initialPluginFiles() throws IOException {
         saveDefaultConfig();
 
-        if(!Constants.BackupDirectory.exists()) Constants.BackupDirectory.mkdirs();
-        if(!Constants.CommitsDirectory.exists()) Constants.CommitsDirectory.mkdirs();
+        if (!Constants.BackupDirectory.exists()) Constants.BackupDirectory.mkdirs();
+        if (!Constants.CommitsDirectory.exists()) Constants.CommitsDirectory.mkdirs();
 
         ConfigManager.CreateConfigurations();
     }

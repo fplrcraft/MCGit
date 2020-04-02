@@ -33,9 +33,9 @@ public class ViewCommand {
         }
     }
 
-    private static void ViewCommit(CommandSender sender, String commitId) throws ParseException {
+    public static void ViewCommit(CommandSender sender, String commitId) throws ParseException {
         File commitFile = new File(Constants.CommitsDirectory + "\\" + commitId + ".yml");
-        if(!commitFile.exists()) {
+        if (!commitFile.exists()) {
             sender.sendMessage(ChatColor.AQUA + "Commit Not Found");
             return;
         }
@@ -49,6 +49,12 @@ public class ViewCommand {
         sender.sendMessage(ChatColor.YELLOW + "Commit Time: " + ChatColor.GREEN + commit.getCreateTime());
         sender.sendMessage(ChatColor.YELLOW + "World: " + ChatColor.GREEN + commit.getWorld().getName());
         sender.sendMessage(ChatColor.YELLOW + "Commit Player: " + ChatColor.GREEN + commit.getPlayer().getName() + " (" + commit.getPlayer().getUniqueId() + ")");
+
+        TextComponent actionsMessage = new TextComponent();
+        actionsMessage.setText(ChatColor.RED + "[Rollback]");
+        actionsMessage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/mcgit rollback " + commit.getCommitId().toString()));
+        sender.spigot().sendMessage(actionsMessage);
+
         sender.sendMessage("");
     }
 
@@ -59,28 +65,23 @@ public class ViewCommand {
         sender.sendMessage("");
         sender.sendMessage("---------[MCGit : Existing Commits]---------");
         for (Commit commit : existingCommits) {
-            TextComponent message = new TextComponent();
-            message.setText(ChatColor.GREEN + commit.getDescription() + " " + ChatColor.YELLOW + Constants.DateFormat.format(commit.getCreateTime()));
-            message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mcgit view commit " + commit.getCommitId().toString()));
-            sender.spigot().sendMessage(message);
+            TextComponent detailsMessage = new TextComponent();
+            detailsMessage.setText(ChatColor.GREEN + commit.getDescription() + " " + ChatColor.YELLOW + Constants.DateFormat.format(commit.getCreateTime()));
+            detailsMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mcgit view commit " + commit.getCommitId().toString()));
+            sender.spigot().sendMessage(detailsMessage);
         }
-        if(existingCommits.size() == 0) {
+        if (existingCommits.size() == 0) {
             sender.sendMessage(ChatColor.AQUA + "Nothing to show");
         }
         sender.sendMessage("");
     }
 
-    private static ArrayList<Commit> reverseArrayList(ArrayList<Commit> alist)
-    {
-        // Arraylist for storing reversed elements
+    private static ArrayList<Commit> reverseArrayList(ArrayList<Commit> alist) {
         ArrayList<Commit> revArrayList = new ArrayList<>();
         for (int i = alist.size() - 1; i >= 0; i--) {
-
-            // Append the elements in reverse order
             revArrayList.add(alist.get(i));
         }
 
-        // Return the reversed arraylist
         return revArrayList;
     }
 }

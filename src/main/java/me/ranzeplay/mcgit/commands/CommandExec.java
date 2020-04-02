@@ -31,6 +31,11 @@ public class CommandExec implements CommandExecutor {
                                 }
                                 break;
                             case "rollback":
+                                try {
+                                    RollbackCommand.Do(args, commandSender);
+                                } catch (ParseException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                                 break;
                         }
                     }
