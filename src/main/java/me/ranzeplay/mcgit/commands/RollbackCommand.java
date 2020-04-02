@@ -3,6 +3,7 @@ package me.ranzeplay.mcgit.commands;
 import me.ranzeplay.mcgit.Constants;
 import me.ranzeplay.mcgit.Main;
 import me.ranzeplay.mcgit.managers.GitManager;
+import me.ranzeplay.mcgit.managers.zip.ZipManager;
 import me.ranzeplay.mcgit.models.Commit;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -69,12 +70,14 @@ public class RollbackCommand {
 
         Commit commit = GitManager.getCommit(commitId);
 
+        ZipManager.unzipWorldFromBackup(commit.getWorld().getName(), commitId);
+
         restartApplication();
     }
 
     private static void restartApplication() {
         final File currentJar = new File(new File(new File(System.getProperty("user.dir")).getAbsolutePath()) + "\\" + Main.Instance.getConfig().getString("serverJarFileName"));
-        System.out.println(currentJar.getAbsolutePath());
+        // System.out.println(currentJar.getAbsolutePath());
 
         /* is it a jar file? */
         if(!currentJar.getName().endsWith(".jar"))

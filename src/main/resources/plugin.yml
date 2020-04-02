@@ -4,7 +4,7 @@ main: me.ranzeplay.mcgit.Main
 api-version: 1.13
 prefix: MCGit
 authors: [Play_D]
-description: A backup plugin for Minecraft running on Spigot server
+description: 'A backup plugin for Minecraft running on Spigot server'
 
 commands:
   mcgit:

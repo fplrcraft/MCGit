@@ -7,6 +7,7 @@ import org.bukkit.World;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class ZipManager {
     public static void zipWorld(String worldName, boolean zipNether, boolean zipTheEnd, String backupId) throws Exception {
@@ -33,5 +34,28 @@ public class ZipManager {
         } else {
             throw new Exception("World folder not found!");
         }
+    }
+
+    public static void unzipWorldFromBackup(String worldName, String backupId) throws IOException {
+        File serverRootDirectory = (Main.Instance.getDataFolder().getParentFile().getAbsoluteFile()).getParentFile();
+        File worldRootDirectory = new File(serverRootDirectory + "\\" + worldName);
+
+        // Delete directory recursively
+        // FileUtils.deleteDirectory(worldRootDirectory);
+        deleteDirectory(worldRootDirectory.getAbsolutePath());
+    }
+
+    private static void deleteDirectory(String path) {
+        File currentDir = new File(path);
+        for (String s : currentDir.list()) {
+            File recursiveFileCurrent = new File(currentDir + "\\" + s);
+            if (recursiveFileCurrent.isDirectory()) {
+                deleteDirectory(recursiveFileCurrent.getAbsolutePath());
+            }
+
+            recursiveFileCurrent.delete();
+        }
+
+        currentDir.delete();
     }
 }
