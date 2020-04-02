@@ -33,7 +33,7 @@ public class CommandExec implements CommandExecutor {
                             case "rollback":
                                 try {
                                     RollbackCommand.Do(args, commandSender);
-                                } catch (ParseException | InterruptedException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                                 break;
