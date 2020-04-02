@@ -11,12 +11,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 public class RollbackCommand {
 
 
-    public static void Do(String[] args, CommandSender sender) throws ParseException, InterruptedException {
+    public static void Do(String[] args, CommandSender sender) throws Exception {
         if (args.length > 1) {
             if (args.length > 2 && args[2].equalsIgnoreCase("confirm")) {
                 Process(sender, args[1]);
@@ -32,7 +35,7 @@ public class RollbackCommand {
         sender.sendMessage(ChatColor.AQUA + "Use \"/mcgit rollback " + commitId + " confirm\" to confirm rollback operation...");
     }
 
-    private static void Process(CommandSender sender, String commitId) throws ParseException, InterruptedException {
+    private static void Process(CommandSender sender, String commitId) throws Exception {
         File commitFile = new File(Constants.CommitsDirectory + "\\" + commitId + ".yml");
         if (!commitFile.exists()) {
             sender.sendMessage(ChatColor.AQUA + "Commit Not Found");
@@ -52,7 +55,6 @@ public class RollbackCommand {
             targetPlayer.sendMessage("");
         }
 
-        int timer = 10;
         for (int t = 10; t > 0; t--) {
             for (Player targetPlayer : Main.Instance.getServer().getOnlinePlayers()) {
                 targetPlayer.sendMessage(ChatColor.RED + "Rollback operation will start in " + t + " second(s)");
@@ -67,6 +69,33 @@ public class RollbackCommand {
 
         Commit commit = GitManager.getCommit(commitId);
 
-        // Unload all chunks
+        restartApplication();
+    }
+
+    private static void restartApplication() {
+        final File currentJar = new File(new File(new File(System.getProperty("user.dir")).getAbsolutePath()) + "\\" + Main.Instance.getConfig().getString("serverJarFileName"));
+        System.out.println(currentJar.getAbsolutePath());
+
+        /* is it a jar file? */
+        if(!currentJar.getName().endsWith(".jar"))
+            return;
+
+        /* Build command: java -jar application.jar */
+        final ArrayList<String> command = new ArrayList<>();
+        command.add("java");
+        for (String argument : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+            command.add(argument);
+        }
+        command.add("-jar");
+        // command.add("nogui");
+        command.add(currentJar.getPath());
+
+        final ProcessBuilder builder = new ProcessBuilder(command);
+        try {
+            builder.start();
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
