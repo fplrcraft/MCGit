@@ -9,7 +9,7 @@ description: A backup plugin for Minecraft running on Spigot server
 commands:
   mcgit:
     description: Plugin command of MCGit
-    usage: /mcgit
+    usage: /mcgit help
     aliases:
       - mg
       - mcg

@@ -36,4 +36,13 @@ public class GitManager {
 
         return list;
     }
+
+    public static Commit getCommit(String commitId) throws ParseException {
+        File commitFile = new File(Constants.CommitsDirectory + "\\" + commitId + ".yml");
+        if (!commitFile.exists()) {
+            return null;
+        }
+
+        return new Commit(null, null, null).getFromBukkitYmlFile(commitFile);
+    }
 }
