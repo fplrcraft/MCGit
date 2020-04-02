@@ -49,6 +49,7 @@ public class ViewCommand {
         sender.sendMessage(ChatColor.YELLOW + "Commit Time: " + ChatColor.GREEN + commit.getCreateTime());
         sender.sendMessage(ChatColor.YELLOW + "World: " + ChatColor.GREEN + commit.getWorld().getName());
         sender.sendMessage(ChatColor.YELLOW + "Commit Player: " + ChatColor.GREEN + commit.getPlayer().getName() + " (" + commit.getPlayer().getUniqueId() + ")");
+        sender.sendMessage(ChatColor.YELLOW + "Size: " + String.format("%.4f", GitManager.GetCommitTotalSize(commit.getCommitId().toString()) / 1024 / 1024) + "MB");
 
         TextComponent actionsMessage = new TextComponent();
         actionsMessage.setText(ChatColor.RED + "[Rollback]");

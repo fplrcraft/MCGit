@@ -45,4 +45,15 @@ public class GitManager {
 
         return new Commit(null, null, null).getFromBukkitYmlFile(commitFile);
     }
+
+    public static double GetCommitTotalSize(String commitId) {
+        double totalSize = 0;
+
+        File commitFile = new File(Constants.BackupDirectory + "\\" + commitId.replace("-", ""));
+        for (File file : commitFile.listFiles()) {
+            totalSize += file.length();
+        }
+
+        return totalSize;
+    }
 }
