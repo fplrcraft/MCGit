@@ -17,7 +17,7 @@ public class GitManager {
     public static Commit makeCommit(String description, Player player, World world) throws IOException {
         Commit commit = new Commit(description, player, world);
 
-        File newCommit = new File(Constants.CommitsDirectory + "\\" + commit.getCommitId().toString() + ".yml");
+        File newCommit = new File(Constants.CommitsDirectory + "/" + commit.getCommitId().toString() + ".yml");
         newCommit.createNewFile();
 
         FileConfiguration filec = commit.saveToBukkitYmlFile(new YamlConfiguration());
@@ -38,7 +38,7 @@ public class GitManager {
     }
 
     public static Commit getCommit(String commitId) throws ParseException {
-        File commitFile = new File(Constants.CommitsDirectory + "\\" + commitId + ".yml");
+        File commitFile = new File(Constants.CommitsDirectory + "/" + commitId + ".yml");
         if (!commitFile.exists()) {
             return null;
         }
@@ -49,7 +49,7 @@ public class GitManager {
     public static double GetCommitTotalSize(String commitId) {
         double totalSize = 0;
 
-        File commitFile = new File(Constants.BackupDirectory + "\\" + commitId.replace("-", ""));
+        File commitFile = new File(Constants.BackupDirectory + "/" + commitId.replace("-", ""));
         for (File file : commitFile.listFiles()) {
             totalSize += file.length();
         }
