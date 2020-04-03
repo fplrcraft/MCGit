@@ -37,7 +37,7 @@ public class RollbackCommand {
     }
 
     private static void Process(CommandSender sender, String commitId) throws Exception {
-        File commitFile = new File(Constants.CommitsDirectory + "\\" + commitId + ".yml");
+        File commitFile = new File(Constants.CommitsDirectory + "/" + commitId + ".yml");
         if (!commitFile.exists()) {
             sender.sendMessage(ChatColor.AQUA + "Commit Not Found");
             return;
@@ -76,11 +76,11 @@ public class RollbackCommand {
     }
 
     private static void restartMinecraftServer() {
-        final File currentJar = new File(new File(new File(System.getProperty("user.dir")).getAbsolutePath()) + "\\" + Main.Instance.getConfig().getString("serverJarFileName"));
+        final File currentJar = new File(new File(new File(System.getProperty("user.dir")).getAbsolutePath()) + "/" + Main.Instance.getConfig().getString("serverJarFileName"));
         // System.out.println(currentJar.getAbsolutePath());
 
         /* is it a jar file? */
-        if(!currentJar.getName().endsWith(".jar"))
+        if (!currentJar.getName().endsWith(".jar"))
             return;
 
         /* Build command: java -jar application.jar */

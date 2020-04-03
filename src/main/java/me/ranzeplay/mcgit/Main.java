@@ -23,11 +23,14 @@ public final class Main extends JavaPlugin {
 
         Bukkit.getPluginCommand("mcgit").setExecutor(new CommandExec());
         // Objects.requireNonNull(Bukkit.getPluginCommand("mcgit")).setTabCompleter(new CommandCompleter());
+
+        Constants.IsBackingUp = false;
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        Constants.IsBackingUp = false;
     }
 
     private void initialPluginFiles() throws IOException {

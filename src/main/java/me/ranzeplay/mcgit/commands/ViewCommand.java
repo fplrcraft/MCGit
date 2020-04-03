@@ -34,7 +34,7 @@ public class ViewCommand {
     }
 
     public static void ViewCommit(CommandSender sender, String commitId) throws ParseException {
-        File commitFile = new File(Constants.CommitsDirectory + "\\" + commitId + ".yml");
+        File commitFile = new File(Constants.CommitsDirectory + "/" + commitId + ".yml");
         if (!commitFile.exists()) {
             sender.sendMessage(ChatColor.AQUA + "Commit Not Found");
             return;
