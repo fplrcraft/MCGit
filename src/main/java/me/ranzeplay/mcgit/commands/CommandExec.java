@@ -1,5 +1,6 @@
 package me.ranzeplay.mcgit.commands;
 
+import me.ranzeplay.mcgit.gui.CommitsPanel;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,6 +37,9 @@ public class CommandExec implements CommandExecutor {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
+                                break;
+                            case "gui":
+                                ((Player) commandSender).openInventory(new CommitsPanel().getInventory());
                                 break;
                         }
                     }
