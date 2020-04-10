@@ -1,7 +1,8 @@
 name: MCGit
 version: ${project.version}
 main: me.ranzeplay.mcgit.Main
-api-version: 1.13
+api-version: 1.15
+load: STARTUP
 prefix: MCGit
 authors: [Play_D]
 description: 'A backup plugin for Minecraft running on Spigot server'

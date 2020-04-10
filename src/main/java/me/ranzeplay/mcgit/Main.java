@@ -1,6 +1,7 @@
 package me.ranzeplay.mcgit;
 
 import me.ranzeplay.mcgit.commands.CommandExec;
+import me.ranzeplay.mcgit.gui.CommitsPanel;
 import me.ranzeplay.mcgit.managers.config.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,6 +24,8 @@ public final class Main extends JavaPlugin {
 
         Bukkit.getPluginCommand("mcgit").setExecutor(new CommandExec());
         // Objects.requireNonNull(Bukkit.getPluginCommand("mcgit")).setTabCompleter(new CommandCompleter());
+
+        Bukkit.getPluginManager().registerEvents(new CommitsPanel(), this);
 
         Constants.IsBackingUp = false;
     }
