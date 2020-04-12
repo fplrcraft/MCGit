@@ -13,7 +13,7 @@ public class CommandExec implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         if (command.isRegistered()) {
-            if(commandSender instanceof Player) {
+            if (commandSender instanceof Player) {
                 if (command.getName().equalsIgnoreCase("mcgit") || command.getAliases().contains(s)) {
                     if (args.length > 0) {
                         switch (args[0].toLowerCase()) {
@@ -42,6 +42,8 @@ public class CommandExec implements CommandExecutor {
                                 ((Player) commandSender).openInventory(new CommitsPanel().getInventory());
                                 break;
                         }
+                    } else {
+                        HelpCommand.Root(commandSender);
                     }
 
                     return true;

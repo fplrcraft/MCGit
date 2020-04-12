@@ -25,7 +25,7 @@ public class CommitCommand {
                     Main.Instance.getServer().getWorld(args[2]);
                     break;
                 default:
-                    sender.sendMessage("Usage: /mcgit commit <commitName> [worldName]");
+                    HelpCommand.Commit(sender);
                     return;
             }
 
@@ -38,13 +38,13 @@ public class CommitCommand {
 
             sender.sendMessage(ChatColor.GREEN + "Commit " + ChatColor.YELLOW + commit.getCommitId().toString() + ChatColor.GREEN + " created successfully!");
             sender.sendMessage(ChatColor.YELLOW + "Size: " + String.format("%.4f", GitManager.GetCommitTotalSize(commit.getCommitId().toString()) / 1024 / 1024) + "MB");
-            sender.sendMessage(ChatColor.YELLOW + "Time elapsed: " + String.format("%.4f", (double)(operationCompleteTime - operationStartTime) / 1000 / 1000 / 1000) + " seconds");
+            sender.sendMessage(ChatColor.YELLOW + "Time elapsed: " + String.format("%.4f", (double) (operationCompleteTime - operationStartTime) / 1000 / 1000 / 1000) + " seconds");
 
         } else {
             if (args.length > 2) {
                 ZipManager.zipWorld(args[2], false, false, UUID.randomUUID().toString().replace("-", ""));
             } else {
-                sender.sendMessage("Usage: /mcgit commit <commitName> <worldName>");
+                HelpCommand.Commit(sender);
             }
         }
     }

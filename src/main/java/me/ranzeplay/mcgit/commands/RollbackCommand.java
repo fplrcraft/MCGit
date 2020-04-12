@@ -18,8 +18,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 public class RollbackCommand {
-
-
     public static void Do(String[] args, CommandSender sender) throws Exception {
         if (args.length > 1) {
             if (args.length > 2 && args[2].equalsIgnoreCase("confirm")) {
@@ -27,6 +25,8 @@ public class RollbackCommand {
                 return;
             }
             RequestConfirm(sender, args[1]);
+        } else {
+            HelpCommand.Rollback(sender);
         }
     }
 
