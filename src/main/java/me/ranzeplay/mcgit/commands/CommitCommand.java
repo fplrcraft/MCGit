@@ -16,13 +16,13 @@ public class CommitCommand {
         if (sender instanceof Player) {
             Player execPlayer = (Player) sender;
 
-            World targetWorld = null;
+            World targetWorld;
             switch (args.length) {
                 case 2:
                     targetWorld = execPlayer.getWorld();
                     break;
                 case 3:
-                    Main.Instance.getServer().getWorld(args[2]);
+                    targetWorld = Main.Instance.getServer().getWorld(args[2]);
                     break;
                 default:
                     HelpCommand.Commit(sender);
@@ -37,7 +37,7 @@ public class CommitCommand {
             long operationCompleteTime = System.nanoTime();
 
             sender.sendMessage(ChatColor.GREEN + "Commit " + ChatColor.YELLOW + commit.getCommitId().toString() + ChatColor.GREEN + " created successfully!");
-            sender.sendMessage(ChatColor.YELLOW + "Size: " + String.format("%.4f", GitManager.GetCommitTotalSize(commit.getCommitId().toString()) / 1024 / 1024) + "MB");
+            sender.sendMessage(ChatColor.YELLOW + "Size: " + String.format("%.4f", GitManager.GetCommitTotalSize(commit.getCommitId().toString()) / 1024) + "MB");
             sender.sendMessage(ChatColor.YELLOW + "Time elapsed: " + String.format("%.4f", (double) (operationCompleteTime - operationStartTime) / 1000 / 1000 / 1000) + " seconds");
 
         } else {

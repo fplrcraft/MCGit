@@ -2,6 +2,8 @@ package me.ranzeplay.mcgit.commands;
 
 import me.ranzeplay.mcgit.managers.GitManager;
 import me.ranzeplay.mcgit.models.Commit;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -18,7 +20,7 @@ public class CommandCompleter implements TabCompleter {
 
         ArrayList<String> s = new ArrayList<>();
         for (String arg : args) {
-            if(!arg.isEmpty()){
+            if (!arg.isEmpty()) {
                 s.add(arg);
             }
         }
@@ -54,6 +56,12 @@ public class CommandCompleter implements TabCompleter {
                                 }
                             } catch (ParseException e) {
                                 e.printStackTrace();
+                            }
+                        }
+                    } else if (s.size() == 3) {
+                        if (s.get(0).equalsIgnoreCase("commit")) {
+                            for (World world : Bukkit.getWorlds()) {
+                                availableChoices.add(world.getName());
                             }
                         }
                     }

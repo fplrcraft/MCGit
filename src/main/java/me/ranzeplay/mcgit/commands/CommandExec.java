@@ -21,6 +21,7 @@ public class CommandExec implements CommandExecutor {
                                 try {
                                     CommitCommand.Do(args, commandSender);
                                 } catch (Exception e) {
+                                    commandSender.sendMessage(ChatColor.RED + "Command executed with error(s)");
                                     e.printStackTrace();
                                 }
                                 break;
@@ -28,6 +29,7 @@ public class CommandExec implements CommandExecutor {
                                 try {
                                     ViewCommand.Do(args, commandSender);
                                 } catch (ParseException e) {
+                                    commandSender.sendMessage(ChatColor.RED + "Command executed with error(s)");
                                     e.printStackTrace();
                                 }
                                 break;
@@ -35,6 +37,7 @@ public class CommandExec implements CommandExecutor {
                                 try {
                                     RollbackCommand.Do(args, commandSender);
                                 } catch (Exception e) {
+                                    commandSender.sendMessage(ChatColor.RED + "Command executed with error(s)");
                                     e.printStackTrace();
                                 }
                                 break;
