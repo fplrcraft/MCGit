@@ -6,60 +6,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ZipFiles {
 
-    List<String> filesListInDir = new ArrayList<String>();
+    final List<String> filesListInDir = new ArrayList<>();
 
     public static void ZipProg(File directory, String outputName) {
         ZipFiles zipFiles = new ZipFiles();
         zipFiles.zipDirectory(directory, outputName);
     }
 
-    /**
-     * This method compresses the single file to zip format
-     *
-     * @param file
-     * @param zipFileName
-     */
-    private static void zipSingleFile(File file, String zipFileName) {
-        try {
-            //create ZipOutputStream to write to the zip file
-            FileOutputStream fos = new FileOutputStream(zipFileName);
-            ZipOutputStream zos = new ZipOutputStream(fos);
-            //add a new Zip Entry to the ZipOutputStream
-            ZipEntry ze = new ZipEntry(file.getName());
-            zos.putNextEntry(ze);
-            //read the file and write to ZipOutputStream
-            FileInputStream fis = new FileInputStream(file);
-            byte[] buffer = new byte[1024];
-            int len;
-            while ((len = fis.read(buffer)) > 0) {
-                zos.write(buffer, 0, len);
-            }
-
-            //Close the zip entry to write to zip file
-            zos.closeEntry();
-            //Close resources
-            zos.close();
-            fis.close();
-            fos.close();
-            System.out.println(file.getCanonicalPath() + " is zipped to " + zipFileName);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * This method zips the directory
-     *
-     * @param dir
-     * @param zipDirName
-     */
     private void zipDirectory(File dir, String zipDirName) {
         try {
             populateFilesList(dir);
@@ -88,15 +47,9 @@ public class ZipFiles {
         }
     }
 
-    /**
-     * This method populates all the files in a directory to a List
-     *
-     * @param dir
-     * @throws IOException
-     */
-    private void populateFilesList(File dir) throws IOException {
+    private void populateFilesList(File dir) {
         File[] files = dir.listFiles();
-        for (File file : files) {
+        for (File file : Objects.requireNonNull(files)) {
             if (file.isFile()) filesListInDir.add(file.getAbsolutePath());
             else populateFilesList(file);
         }

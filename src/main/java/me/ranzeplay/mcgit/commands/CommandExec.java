@@ -54,6 +54,8 @@ public class CommandExec implements CommandExecutor {
             }
 
             commandSender.sendMessage(ChatColor.RED + "The command can only be executed by a Player");
+
+            return true;
         }
 
         return false;

@@ -69,6 +69,10 @@ public class RollbackCommand {
         }
 
         Commit commit = GitManager.getCommit(commitId);
+        if (commit == null) {
+            sender.sendMessage(ChatColor.RED + "Cannot read Commit file normally, it might be damaged");
+            return;
+        }
 
         if (Main.Instance.getConfig().getBoolean("compressNetherWorldByDefault")) {
             ZipManager.unzipWorldFromBackup(commit.getWorld().getName().replaceAll("_nether", ""), commit.getCommitId().toString().replace("-", ""));
@@ -86,16 +90,12 @@ public class RollbackCommand {
         final File currentJar = new File(new File(new File(System.getProperty("user.dir")).getAbsolutePath()) + "/" + Main.Instance.getConfig().getString("serverJarFileName"));
         // System.out.println(currentJar.getAbsolutePath());
 
-        /* is it a jar file? */
         if (!currentJar.getName().endsWith(".jar"))
             return;
 
-        /* Build command: java -jar application.jar */
         final ArrayList<String> command = new ArrayList<>();
         command.add("java");
-        for (String argument : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
-            command.add(argument);
-        }
+        command.addAll(ManagementFactory.getRuntimeMXBean().getInputArguments());
         command.add("-jar");
         // command.add("nogui");
         command.add(currentJar.getPath());

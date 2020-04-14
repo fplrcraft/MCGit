@@ -8,6 +8,7 @@ import org.bukkit.World;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Objects;
 
 public class ZipManager {
     public static void zipWorld(String worldName, String backupId) throws Exception {
@@ -51,7 +52,7 @@ public class ZipManager {
 
     private static void deleteDirectory(String path) {
         File currentDir = new File(path);
-        for (String s : currentDir.list()) {
+        for (String s : Objects.requireNonNull(currentDir.list())) {
             File recursiveFileCurrent = new File(currentDir + "/" + s);
             if (recursiveFileCurrent.isDirectory()) {
                 deleteDirectory(recursiveFileCurrent.getAbsolutePath());

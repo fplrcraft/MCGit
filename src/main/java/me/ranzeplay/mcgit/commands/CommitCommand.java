@@ -30,6 +30,11 @@ public class CommitCommand {
 
         Commit commit = GitManager.makeCommit(args[1], execPlayer, targetWorld);
 
+        if (targetWorld == null) {
+            sender.sendMessage(ChatColor.RED + "World not found, it might be deleted");
+            return;
+        }
+
         if (Main.Instance.getConfig().getBoolean("compressNetherWorldByDefault")) {
             ZipManager.zipWorld(targetWorld.getName().replaceAll("_nether", ""), commit.getCommitId().toString().replace("-", ""));
         }

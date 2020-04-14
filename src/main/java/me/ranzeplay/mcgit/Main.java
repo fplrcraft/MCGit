@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public final class Main extends JavaPlugin {
 
@@ -23,8 +24,8 @@ public final class Main extends JavaPlugin {
             e.printStackTrace();
         }
 
-        Bukkit.getPluginCommand("mcgit").setExecutor(new CommandExec());
-        Bukkit.getPluginCommand("mcgit").setTabCompleter(new CommandCompleter());
+        Objects.requireNonNull(Bukkit.getPluginCommand("mcgit")).setExecutor(new CommandExec());
+        Objects.requireNonNull(Bukkit.getPluginCommand("mcgit")).setTabCompleter(new CommandCompleter());
 
         Bukkit.getPluginManager().registerEvents(new CommitsPanel(), this);
 

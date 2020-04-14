@@ -17,10 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CommitsPanel implements InventoryHolder, Listener {
-    private Inventory inventory;
-
     public Inventory getInventory() {
         ArrayList<Commit> commitsList = null;
         try {
@@ -29,16 +28,16 @@ public class CommitsPanel implements InventoryHolder, Listener {
             e.printStackTrace();
         }
 
-        inventory = Bukkit.createInventory(null, 9 * 6, "All Commits");
+        Inventory inventory = Bukkit.createInventory(null, 9 * 6, "All Commits");
         int i = 1;
-        for (Commit commit : commitsList) {
+        for (Commit commit : Objects.requireNonNull(commitsList)) {
             if (i >= 54) {
                 break;
             }
             i++;
 
             ItemStack item = new ItemStack(Material.GREEN_WOOL, 1);
-            ItemMeta meta = item.getItemMeta().clone();
+            ItemMeta meta = Objects.requireNonNull(item.getItemMeta()).clone();
             meta.setDisplayName(commit.getCommitId().toString());
 
             ArrayList<String> lore = new ArrayList<>();
@@ -57,12 +56,12 @@ public class CommitsPanel implements InventoryHolder, Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) throws ParseException {
-        if (event.getClickedInventory().getHolder() != this.getInventory().getHolder()) {
+        if (Objects.requireNonNull(event.getClickedInventory()).getHolder() != this.getInventory().getHolder()) {
             return;
         }
 
         Player player = (Player) event.getWhoClicked();
-        String commitId = event.getCurrentItem().getItemMeta().getDisplayName();
+        String commitId = Objects.requireNonNull(Objects.requireNonNull(event.getCurrentItem()).getItemMeta()).getDisplayName();
         if (event.getClick().isLeftClick()) {
             player.closeInventory();
             ViewCommand.ViewCommit(player, commitId);

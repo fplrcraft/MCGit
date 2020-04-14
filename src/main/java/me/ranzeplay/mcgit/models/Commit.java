@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Commit {
@@ -69,10 +70,10 @@ public class Commit {
 
     public Commit getFromBukkitYmlFile(File ymlFile) throws ParseException {
         YamlConfiguration filec = YamlConfiguration.loadConfiguration(ymlFile);
-        this.commitId = UUID.fromString(filec.getString("id"));
+        this.commitId = UUID.fromString(Objects.requireNonNull(filec.getString("id")));
         this.description = filec.getString("description");
         this.createTime = Constants.DateFormat.parse(filec.getString("time"));
-        this.playerUUID = UUID.fromString(filec.getString("player"));
+        this.playerUUID = UUID.fromString(Objects.requireNonNull(filec.getString("player")));
         this.worldName = filec.getString("world");
 
         return this;
