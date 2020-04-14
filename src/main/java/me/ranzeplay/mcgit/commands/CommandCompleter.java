@@ -61,7 +61,9 @@ public class CommandCompleter implements TabCompleter {
                     } else if (s.size() == 3) {
                         if (s.get(0).equalsIgnoreCase("commit")) {
                             for (World world : Bukkit.getWorlds()) {
-                                availableChoices.add(world.getName());
+                                if (!(world.getName().endsWith("_nether") || world.getName().endsWith("_the_end"))) {
+                                    availableChoices.add(world.getName());
+                                }
                             }
                         }
                     }

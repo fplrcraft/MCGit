@@ -1,4 +1,4 @@
 serverJarFileName: spigot-1.15.2.jar
 
 compressNetherWorldByDefault: true
-compressTheEndByDefault: true
+compressTheEndWorldByDefault: true

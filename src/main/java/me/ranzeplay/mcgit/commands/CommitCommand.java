@@ -9,43 +9,40 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
-
 public class CommitCommand {
     public static void Do(String[] args, CommandSender sender) throws Exception {
-        if (sender instanceof Player) {
-            Player execPlayer = (Player) sender;
+        Player execPlayer = (Player) sender;
 
-            World targetWorld;
-            switch (args.length) {
-                case 2:
-                    targetWorld = execPlayer.getWorld();
-                    break;
-                case 3:
-                    targetWorld = Main.Instance.getServer().getWorld(args[2]);
-                    break;
-                default:
-                    HelpCommand.Commit(sender);
-                    return;
-            }
-
-            long operationStartTime = System.nanoTime();
-
-            Commit commit = GitManager.makeCommit(args[1], execPlayer, targetWorld);
-            ZipManager.zipWorld(targetWorld.getName(), false, false, commit.getCommitId().toString().replace("-", ""));
-
-            long operationCompleteTime = System.nanoTime();
-
-            sender.sendMessage(ChatColor.GREEN + "Commit " + ChatColor.YELLOW + commit.getCommitId().toString() + ChatColor.GREEN + " created successfully!");
-            sender.sendMessage(ChatColor.YELLOW + "Size: " + String.format("%.4f", GitManager.GetCommitTotalSize(commit.getCommitId().toString()) / 1024) + "MB");
-            sender.sendMessage(ChatColor.YELLOW + "Time elapsed: " + String.format("%.4f", (double) (operationCompleteTime - operationStartTime) / 1000 / 1000 / 1000) + " seconds");
-
-        } else {
-            if (args.length > 2) {
-                ZipManager.zipWorld(args[2], false, false, UUID.randomUUID().toString().replace("-", ""));
-            } else {
+        World targetWorld;
+        switch (args.length) {
+            case 2:
+                targetWorld = execPlayer.getWorld();
+                break;
+            case 3:
+                targetWorld = Main.Instance.getServer().getWorld(args[2].replaceAll("_nether", "").replaceAll("_the_end", ""));
+                break;
+            default:
                 HelpCommand.Commit(sender);
-            }
+                return;
         }
+
+        long operationStartTime = System.nanoTime();
+
+        Commit commit = GitManager.makeCommit(args[1], execPlayer, targetWorld);
+
+        if (Main.Instance.getConfig().getBoolean("compressNetherWorldByDefault")) {
+            ZipManager.zipWorld(targetWorld.getName().replaceAll("_nether", ""), commit.getCommitId().toString().replace("-", ""));
+        }
+        if (Main.Instance.getConfig().getBoolean("compressTheEndByDefault")) {
+            ZipManager.zipWorld(targetWorld.getName().replaceAll("_the_end", ""), commit.getCommitId().toString().replace("-", ""));
+        }
+
+        ZipManager.zipWorld(targetWorld.getName(), commit.getCommitId().toString().replace("-", ""));
+
+        long operationCompleteTime = System.nanoTime();
+
+        sender.sendMessage(ChatColor.GREEN + "Commit " + ChatColor.YELLOW + commit.getCommitId().toString() + ChatColor.GREEN + " created successfully!");
+        sender.sendMessage(ChatColor.YELLOW + "Size: " + String.format("%.4f", GitManager.GetCommitTotalSize(commit.getCommitId().toString()) / 1024 / 1024) + "MB");
+        sender.sendMessage(ChatColor.YELLOW + "Time elapsed: " + String.format("%.4f", (double) (operationCompleteTime - operationStartTime) / 1000 / 1000 / 1000) + " seconds");
     }
 }

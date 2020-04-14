@@ -70,6 +70,13 @@ public class RollbackCommand {
 
         Commit commit = GitManager.getCommit(commitId);
 
+        if (Main.Instance.getConfig().getBoolean("compressNetherWorldByDefault")) {
+            ZipManager.unzipWorldFromBackup(commit.getWorld().getName().replaceAll("_nether", ""), commit.getCommitId().toString().replace("-", ""));
+        }
+        if (Main.Instance.getConfig().getBoolean("compressTheEndByDefault")) {
+            ZipManager.unzipWorldFromBackup(commit.getWorld().getName().replaceAll("_the_end", ""), commit.getCommitId().toString().replace("-", ""));
+        }
+
         ZipManager.unzipWorldFromBackup(commit.getWorld().getName(), commitId.replace("-", ""));
 
         restartMinecraftServer();

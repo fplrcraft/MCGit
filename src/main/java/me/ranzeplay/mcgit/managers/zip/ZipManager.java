@@ -10,15 +10,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class ZipManager {
-    public static void zipWorld(String worldName, boolean zipNether, boolean zipTheEnd, String backupId) throws Exception {
+    public static void zipWorld(String worldName, String backupId) throws Exception {
         File destinationDirectory = new File(Constants.BackupDirectory.getAbsolutePath() + "/" + backupId);
-        System.out.println("Destination: " + destinationDirectory.getAbsolutePath());
+        // System.out.println("Destination: " + destinationDirectory.getAbsolutePath());
         if (!destinationDirectory.exists()) destinationDirectory.mkdirs();
 
         File serverRootDirectory = (Main.Instance.getDataFolder().getParentFile().getAbsoluteFile()).getParentFile();
-        System.out.println("Server root: " + serverRootDirectory.getAbsolutePath());
+        // System.out.println("Server root: " + serverRootDirectory.getAbsolutePath());
         File worldRootDirectory = new File(serverRootDirectory.getAbsolutePath() + "/" + worldName);
-        System.out.println("World root: " + worldRootDirectory.getAbsolutePath());
+        // System.out.println("World root: " + worldRootDirectory.getAbsolutePath());
         if (worldRootDirectory.exists()) {
             World world = Bukkit.getWorld(worldName);
             if (world != null) {

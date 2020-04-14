@@ -19,15 +19,15 @@ public class Commit {
     private String worldName;
 
     public Commit(String description, Player player, World world) {
-        if(player == null){
+        if (player == null) {
             this.playerUUID = UUID.randomUUID();
         } else {
             this.playerUUID = player.getUniqueId();
         }
 
-        if(world == null) {
+        if (world == null) {
             worldName = "";
-        }else{
+        } else {
             this.worldName = world.getName();
         }
 
