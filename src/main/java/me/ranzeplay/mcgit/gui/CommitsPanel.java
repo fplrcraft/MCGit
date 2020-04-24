@@ -56,20 +56,19 @@ public class CommitsPanel implements InventoryHolder, Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) throws ParseException {
-        if (Objects.requireNonNull(event.getClickedInventory()).getHolder() != this.getInventory().getHolder()) {
-            return;
+        if (event.getView().getTitle().equalsIgnoreCase("All Commits")) {
+            Player player = (Player) event.getWhoClicked();
+            String commitId = Objects.requireNonNull(Objects.requireNonNull(event.getCurrentItem()).getItemMeta()).getDisplayName();
+            if (event.getClick().isLeftClick()) {
+                player.closeInventory();
+                ViewCommand.ViewCommit(player, commitId);
+            } else if (event.getClick().isRightClick()) {
+                player.closeInventory();
+                player.performCommand("mcgit rollback " + commitId);
+            }
+
+            event.setCancelled(true);
         }
 
-        Player player = (Player) event.getWhoClicked();
-        String commitId = Objects.requireNonNull(Objects.requireNonNull(event.getCurrentItem()).getItemMeta()).getDisplayName();
-        if (event.getClick().isLeftClick()) {
-            player.closeInventory();
-            ViewCommand.ViewCommit(player, commitId);
-        } else if(event.getClick().isRightClick()) {
-            player.closeInventory();
-            player.performCommand("mcgit rollback " + commitId);
-        }
-
-        event.setCancelled(true);
     }
 }
