@@ -9,6 +9,8 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.concurrent.CompletableFuture;
+
 public class CommitCommand {
     public static void Do(String[] args, CommandSender sender) throws Exception {
         Player execPlayer = (Player) sender;
@@ -35,19 +37,33 @@ public class CommitCommand {
             return;
         }
 
-        if (Main.Instance.getConfig().getBoolean("compressNetherWorldByDefault")) {
-            ZipManager.zipWorld(targetWorld.getName().replaceAll("_nether", ""), commit.getCommitId().toString().replace("-", ""));
-        }
-        if (Main.Instance.getConfig().getBoolean("compressTheEndByDefault")) {
-            ZipManager.zipWorld(targetWorld.getName().replaceAll("_the_end", ""), commit.getCommitId().toString().replace("-", ""));
-        }
+        CompletableFuture<Void> zipProcess = CompletableFuture.runAsync(() -> {
+            if (Main.Instance.getConfig().getBoolean("compressNetherWorldByDefault")) {
+                try {
+                    ZipManager.zipWorld(targetWorld.getName().replaceAll("_nether", ""), commit.getCommitId().toString().replace("-", ""));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (Main.Instance.getConfig().getBoolean("compressTheEndByDefault")) {
+                try {
+                    ZipManager.zipWorld(targetWorld.getName().replaceAll("_the_end", ""), commit.getCommitId().toString().replace("-", ""));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
-        ZipManager.zipWorld(targetWorld.getName(), commit.getCommitId().toString().replace("-", ""));
+            try {
+                ZipManager.zipWorld(targetWorld.getName(), commit.getCommitId().toString().replace("-", ""));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).whenComplete((t, u) -> {
+            long operationCompleteTime = System.nanoTime();
 
-        long operationCompleteTime = System.nanoTime();
-
-        sender.sendMessage(ChatColor.GREEN + "Commit " + ChatColor.YELLOW + commit.getCommitId().toString() + ChatColor.GREEN + " created successfully!");
-        sender.sendMessage(ChatColor.YELLOW + "Size: " + String.format("%.4f", GitManager.GetCommitTotalSize(commit.getCommitId().toString()) / 1024 / 1024) + "MB");
-        sender.sendMessage(ChatColor.YELLOW + "Time elapsed: " + String.format("%.4f", (double) (operationCompleteTime - operationStartTime) / 1000 / 1000 / 1000) + " seconds");
+            sender.sendMessage(ChatColor.GREEN + "Commit " + ChatColor.YELLOW + commit.getCommitId().toString() + ChatColor.GREEN + " created successfully!");
+            sender.sendMessage(ChatColor.YELLOW + "Size: " + String.format("%.4f", GitManager.GetCommitTotalSize(commit.getCommitId().toString()) / 1024 / 1024) + "MB");
+            sender.sendMessage(ChatColor.YELLOW + "Time elapsed: " + String.format("%.4f", (double) (operationCompleteTime - operationStartTime) / 1000 / 1000 / 1000) + " seconds");
+        });
     }
 }
