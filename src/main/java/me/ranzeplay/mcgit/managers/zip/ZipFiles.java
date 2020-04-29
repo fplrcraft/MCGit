@@ -11,7 +11,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ZipFiles {
-
     final List<String> filesListInDir = new ArrayList<>();
 
     public static void ZipProg(File directory, String outputName) {
@@ -28,7 +27,7 @@ public class ZipFiles {
             ZipOutputStream zos = new ZipOutputStream(fos);
             for (String filePath : filesListInDir) {
                 //for ZipEntry we need to keep only relative file path, so we used substring on absolute path
-                ZipEntry ze = new ZipEntry(filePath.substring(dir.getAbsolutePath().length() + 1));
+                ZipEntry ze = new ZipEntry(filePath.substring(dir.getAbsolutePath().length() + 1));tt
                 zos.putNextEntry(ze);
                 //read the file and write to ZipOutputStream
                 FileInputStream fis = new FileInputStream(filePath);

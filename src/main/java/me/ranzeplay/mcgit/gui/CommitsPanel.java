@@ -69,6 +69,5 @@ public class CommitsPanel implements InventoryHolder, Listener {
 
             event.setCancelled(true);
         }
-
     }
 }

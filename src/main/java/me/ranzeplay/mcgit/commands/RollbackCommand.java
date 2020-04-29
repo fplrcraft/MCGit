@@ -96,6 +96,16 @@ public class RollbackCommand {
         final ArrayList<String> command = new ArrayList<>();
         command.add("java");
         command.addAll(ManagementFactory.getRuntimeMXBean().getInputArguments());
+        /* is it a jar file? */
+        if (!currentJar.getName().endsWith(".jar"))
+            return;
+
+        /* Build command: java -jar application.jar */
+        final ArrayList<String> command = new ArrayList<>();
+        command.add("java");
+        for (String argument : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+            command.add(argument);
+        }
         command.add("-jar");
         // command.add("nogui");
         command.add(currentJar.getPath());
