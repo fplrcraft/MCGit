@@ -18,8 +18,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 public class RollbackCommand {
-
-
     public static void Do(String[] args, CommandSender sender) throws Exception {
         if (args.length > 1) {
             if (args.length > 2 && args[2].equalsIgnoreCase("confirm")) {
@@ -27,6 +25,8 @@ public class RollbackCommand {
                 return;
             }
             RequestConfirm(sender, args[1]);
+        } else {
+            HelpCommand.Rollback(sender);
         }
     }
 
@@ -69,6 +69,17 @@ public class RollbackCommand {
         }
 
         Commit commit = GitManager.getCommit(commitId);
+        if (commit == null) {
+            sender.sendMessage(ChatColor.RED + "Cannot read Commit file normally, it might be damaged");
+            return;
+        }
+
+        if (Main.Instance.getConfig().getBoolean("compressNetherWorldByDefault")) {
+            ZipManager.unzipWorldFromBackup(commit.getWorld().getName().replaceAll("_nether", ""), commit.getCommitId().toString().replace("-", ""));
+        }
+        if (Main.Instance.getConfig().getBoolean("compressTheEndByDefault")) {
+            ZipManager.unzipWorldFromBackup(commit.getWorld().getName().replaceAll("_the_end", ""), commit.getCommitId().toString().replace("-", ""));
+        }
 
         ZipManager.unzipWorldFromBackup(commit.getWorld().getName(), commitId.replace("-", ""));
 
@@ -79,6 +90,12 @@ public class RollbackCommand {
         final File currentJar = new File(new File(new File(System.getProperty("user.dir")).getAbsolutePath()) + "/" + Main.Instance.getConfig().getString("serverJarFileName"));
         // System.out.println(currentJar.getAbsolutePath());
 
+        if (!currentJar.getName().endsWith(".jar"))
+            return;
+
+        final ArrayList<String> command = new ArrayList<>();
+        command.add("java");
+        command.addAll(ManagementFactory.getRuntimeMXBean().getInputArguments());
         /* is it a jar file? */
         if (!currentJar.getName().endsWith(".jar"))
             return;

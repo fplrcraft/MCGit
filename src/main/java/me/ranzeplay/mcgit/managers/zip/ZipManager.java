@@ -8,17 +8,18 @@ import org.bukkit.World;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Objects;
 
 public class ZipManager {
-    public static void zipWorld(String worldName, boolean zipNether, boolean zipTheEnd, String backupId) throws Exception {
+    public static void zipWorld(String worldName, String backupId) throws Exception {
         File destinationDirectory = new File(Constants.BackupDirectory.getAbsolutePath() + "/" + backupId);
-        System.out.println("Destination: " + destinationDirectory.getAbsolutePath());
+        // System.out.println("Destination: " + destinationDirectory.getAbsolutePath());
         if (!destinationDirectory.exists()) destinationDirectory.mkdirs();
 
         File serverRootDirectory = (Main.Instance.getDataFolder().getParentFile().getAbsoluteFile()).getParentFile();
-        System.out.println("Server root: " + serverRootDirectory.getAbsolutePath());
+        // System.out.println("Server root: " + serverRootDirectory.getAbsolutePath());
         File worldRootDirectory = new File(serverRootDirectory.getAbsolutePath() + "/" + worldName);
-        System.out.println("World root: " + worldRootDirectory.getAbsolutePath());
+        // System.out.println("World root: " + worldRootDirectory.getAbsolutePath());
         if (worldRootDirectory.exists()) {
             World world = Bukkit.getWorld(worldName);
             if (world != null) {
@@ -49,9 +50,9 @@ public class ZipManager {
         UnzipFiles.UnzipToDirectory(new File(Constants.BackupDirectory.getAbsolutePath() + "/" + backupId + "/" + (backupId + "-" + worldName + ".zip")), new File(serverRootDirectory.getAbsolutePath() + "/" + worldName));
     }
 
-    private static void deleteDirectory(String path) {
+    public static void deleteDirectory(String path) {
         File currentDir = new File(path);
-        for (String s : currentDir.list()) {
+        for (String s : Objects.requireNonNull(currentDir.list())) {
             File recursiveFileCurrent = new File(currentDir + "/" + s);
             if (recursiveFileCurrent.isDirectory()) {
                 deleteDirectory(recursiveFileCurrent.getAbsolutePath());

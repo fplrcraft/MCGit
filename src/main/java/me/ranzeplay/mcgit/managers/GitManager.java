@@ -50,7 +50,7 @@ public class GitManager {
         double totalSize = 0;
 
         File commitFile = new File(Constants.BackupDirectory + "/" + commitId.replace("-", ""));
-        for (File file : commitFile.listFiles()) {
+        for (File file : Objects.requireNonNull(commitFile.listFiles())) {
             totalSize += file.length();
         }
 

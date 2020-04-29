@@ -6,8 +6,7 @@ import java.util.zip.ZipInputStream;
 
 public class UnzipFiles {
     public static void UnzipToDirectory(File zipFilePath, File destinationDirectory) throws IOException {
-        ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFilePath.getAbsoluteFile()));
-        try {
+        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFilePath.getAbsoluteFile()))) {
             ZipEntry entry;
 
             while ((entry = zis.getNextEntry()) != null) {
@@ -33,23 +32,6 @@ public class UnzipFiles {
 
                 out.close();
             }
-        } finally {
-            zis.close();
         }
-    }
-
-    public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
-
-
-        File destFile = new File(destinationDir, zipEntry.getName());
-
-        String destDirPath = destinationDir.getCanonicalPath();
-        String destFilePath = destFile.getCanonicalPath();
-
-        if (!destFilePath.startsWith(destDirPath + File.separator)) {
-            throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
-        }
-
-        return destFile;
     }
 }

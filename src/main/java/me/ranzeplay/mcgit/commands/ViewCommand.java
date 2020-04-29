@@ -30,6 +30,8 @@ public class ViewCommand {
                 default:
                     sender.sendMessage("Usage: /mcgit view <commit|commits>");
             }
+        } else {
+            HelpCommand.View(sender);
         }
     }
 

@@ -13,7 +13,7 @@ public class CommandExec implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         if (command.isRegistered()) {
-            if(commandSender instanceof Player) {
+            if (commandSender instanceof Player) {
                 if (command.getName().equalsIgnoreCase("mcgit") || command.getAliases().contains(s)) {
                     if (args.length > 0) {
                         switch (args[0].toLowerCase()) {
@@ -21,6 +21,7 @@ public class CommandExec implements CommandExecutor {
                                 try {
                                     CommitCommand.Do(args, commandSender);
                                 } catch (Exception e) {
+                                    commandSender.sendMessage(ChatColor.RED + "Command executed with error(s)");
                                     e.printStackTrace();
                                 }
                                 break;
@@ -28,6 +29,7 @@ public class CommandExec implements CommandExecutor {
                                 try {
                                     ViewCommand.Do(args, commandSender);
                                 } catch (ParseException e) {
+                                    commandSender.sendMessage(ChatColor.RED + "Command executed with error(s)");
                                     e.printStackTrace();
                                 }
                                 break;
@@ -35,6 +37,14 @@ public class CommandExec implements CommandExecutor {
                                 try {
                                     RollbackCommand.Do(args, commandSender);
                                 } catch (Exception e) {
+                                    commandSender.sendMessage(ChatColor.RED + "Command executed with error(s)");
+                                    e.printStackTrace();
+                                }
+                                break;
+                            case "delete":
+                                try {
+                                    DeleteCommand.Do(args, commandSender);
+                                } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
                                 break;
@@ -42,6 +52,8 @@ public class CommandExec implements CommandExecutor {
                                 ((Player) commandSender).openInventory(new CommitsPanel().getInventory());
                                 break;
                         }
+                    } else {
+                        HelpCommand.Root(commandSender);
                     }
 
                     return true;
@@ -49,6 +61,8 @@ public class CommandExec implements CommandExecutor {
             }
 
             commandSender.sendMessage(ChatColor.RED + "The command can only be executed by a Player");
+
+            return true;
         }
 
         return false;
