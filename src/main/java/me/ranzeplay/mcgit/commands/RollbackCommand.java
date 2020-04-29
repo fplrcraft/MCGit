@@ -83,6 +83,10 @@ public class RollbackCommand {
 
         ZipManager.unzipWorldFromBackup(commit.getWorld().getName(), commitId.replace("-", ""));
 
+        new File(Constants.BackupDirectory.getAbsolutePath() + "/" + commitId + "/" + (commitId.replace("-", "") + "-" + commit.getWorld().getName() + ".zip")).delete();
+
+        Thread.sleep(1000);
+
         restartMinecraftServer();
     }
 
@@ -101,11 +105,6 @@ public class RollbackCommand {
             return;
 
         /* Build command: java -jar application.jar */
-        final ArrayList<String> command = new ArrayList<>();
-        command.add("java");
-        for (String argument : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
-            command.add(argument);
-        }
         command.add("-jar");
         // command.add("nogui");
         command.add(currentJar.getPath());
