@@ -37,7 +37,7 @@ public class CommitCommand {
             return;
         }
 
-        CompletableFuture<Void> zipProcess = CompletableFuture.runAsync(() -> {
+        CompletableFuture.runAsync(() -> {
             if (Main.Instance.getConfig().getBoolean("compressNetherWorldByDefault")) {
                 try {
                     ZipManager.zipWorld(targetWorld.getName().replaceAll("_nether", ""), commit.getCommitId().toString().replace("-", ""));

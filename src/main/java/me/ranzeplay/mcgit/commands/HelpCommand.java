@@ -35,4 +35,11 @@ public class HelpCommand {
         sender.sendMessage(ChatColor.YELLOW + "/mcgit rollback <commitId>" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Rollback to a specific commit");
         sender.sendMessage("");
     }
+
+    public static void Delete(CommandSender sender) {
+        sender.sendMessage("");
+        sender.sendMessage("---------[MCGit : Command Helper]---------");
+        sender.sendMessage(ChatColor.YELLOW + "/mcgit delete <commitId>" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Delete a specific commit");
+        sender.sendMessage("");
+    }
 }

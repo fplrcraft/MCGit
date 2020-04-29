@@ -50,7 +50,7 @@ public class ZipManager {
         UnzipFiles.UnzipToDirectory(new File(Constants.BackupDirectory.getAbsolutePath() + "/" + backupId + "/" + (backupId + "-" + worldName + ".zip")), new File(serverRootDirectory.getAbsolutePath() + "/" + worldName));
     }
 
-    private static void deleteDirectory(String path) {
+    public static void deleteDirectory(String path) {
         File currentDir = new File(path);
         for (String s : Objects.requireNonNull(currentDir.list())) {
             File recursiveFileCurrent = new File(currentDir + "/" + s);

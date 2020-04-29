@@ -33,11 +33,12 @@ public class CommandCompleter implements TabCompleter {
                         availableChoices.add("commit");
                         availableChoices.add("view");
                         availableChoices.add("rollback");
+                        availableChoices.add("delete");
                     } else if (s.size() == 1) {
                         if (s.get(0).equalsIgnoreCase("view")) {
                             availableChoices.add("commits");
                             availableChoices.add("commit");
-                        } else if (s.get(0).equalsIgnoreCase("rollback")) {
+                        } else if (s.get(0).equalsIgnoreCase("rollback") || s.get(0).equalsIgnoreCase("delete")) {
                             try {
                                 ArrayList<Commit> commits = GitManager.commitsList();
                                 for (Commit commit : commits) {

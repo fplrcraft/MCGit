@@ -41,6 +41,13 @@ public class CommandExec implements CommandExecutor {
                                     e.printStackTrace();
                                 }
                                 break;
+                            case "delete":
+                                try {
+                                    DeleteCommand.Do(args, commandSender);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
                             case "gui":
                                 ((Player) commandSender).openInventory(new CommitsPanel().getInventory());
                                 break;
