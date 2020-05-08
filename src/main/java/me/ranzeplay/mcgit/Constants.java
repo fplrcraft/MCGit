@@ -13,5 +13,8 @@ public class Constants {
     // Git File Configurations
     public static final File CommitsDirectory = new File(Constants.ConfigDirectory + "/Commits");
 
+    /**
+     * Just used to tell players if it is going to rollback server save st the next server startup
+     */
     public static boolean IsScheduled = false;
 }
