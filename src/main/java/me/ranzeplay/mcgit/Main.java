@@ -41,7 +41,7 @@ public final class Main extends JavaPlugin {
     private void initialPluginFiles() throws IOException {
         saveDefaultConfig();
 
-        if (!Constants.BackupDirectory.exists()) Constants.BackupDirectory.mkdirs();
+        if (!Constants.BackupsDirectory.exists()) Constants.BackupsDirectory.mkdirs();
         if (!Constants.CommitsDirectory.exists()) Constants.CommitsDirectory.mkdirs();
 
         ConfigManager.CreateConfigurations();

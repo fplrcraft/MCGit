@@ -8,6 +8,7 @@ import me.ranzeplay.mcgit.models.Commit;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -64,26 +65,32 @@ public class RollbackCommand {
             Thread.sleep(1000);
         }
 
+        Commit commit = GitManager.getCommit(commitId);
+        if (commit == null) {
+            sender.sendMessage(ChatColor.RED + "Cannot read Commit file normally, it might be damaged");
+            sender.sendMessage(ChatColor.RED + "Operation failed...");
+            return;
+        }
+
         for (Player player : Main.Instance.getServer().getOnlinePlayers()) {
             player.kickPlayer("Rollback operation in progress");
         }
 
-        Commit commit = GitManager.getCommit(commitId);
-        if (commit == null) {
-            sender.sendMessage(ChatColor.RED + "Cannot read Commit file normally, it might be damaged");
-            return;
+        for (Chunk chunk : commit.getWorld().getLoadedChunks()) {
+            chunk.unload();
         }
 
         if (Main.Instance.getConfig().getBoolean("compressNetherWorldByDefault")) {
-            ZipManager.unzipWorldFromBackup(commit.getWorld().getName().replaceAll("_nether", ""), commit.getCommitId().toString().replace("-", ""));
+            ZipManager.replaceWorldFromBackup(commit.getWorld().getName().replaceAll("_nether", "") + "_nether", commit.getCommitId().toString().replace("-", ""));
         }
         if (Main.Instance.getConfig().getBoolean("compressTheEndByDefault")) {
-            ZipManager.unzipWorldFromBackup(commit.getWorld().getName().replaceAll("_the_end", ""), commit.getCommitId().toString().replace("-", ""));
+            ZipManager.replaceWorldFromBackup(commit.getWorld().getName().replaceAll("_nether", "").replaceAll("_the_end", "") + "_the_end",
+                    commit.getCommitId().toString().replace("-", ""));
         }
 
-        ZipManager.unzipWorldFromBackup(commit.getWorld().getName(), commitId.replace("-", ""));
+        ZipManager.replaceWorldFromBackup(commit.getWorld().getName().replaceAll("_the_end", ""), commitId.replace("-", ""));
 
-        new File(Constants.BackupDirectory.getAbsolutePath() + "/" + commitId + "/" + (commitId.replace("-", "") + "-" + commit.getWorld().getName() + ".zip")).delete();
+        new File(Constants.BackupsDirectory.getAbsolutePath() + "/" + commitId + "/" + (commitId.replace("-", "") + "-" + commit.getWorld().getName() + ".zip")).delete();
 
         Thread.sleep(1000);
 

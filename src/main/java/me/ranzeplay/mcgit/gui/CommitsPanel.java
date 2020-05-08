@@ -23,7 +23,7 @@ public class CommitsPanel implements InventoryHolder, Listener {
     public Inventory getInventory() {
         ArrayList<Commit> commitsList = null;
         try {
-            commitsList = GitManager.commitsList();
+            commitsList = GitManager.getAllCommits();
         } catch (ParseException e) {
             e.printStackTrace();
         }

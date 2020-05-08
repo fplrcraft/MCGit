@@ -62,7 +62,7 @@ public class ViewCommand {
     }
 
     private static void ViewCommits(CommandSender sender) throws ParseException {
-        ArrayList<Commit> existingCommits = GitManager.commitsList();
+        ArrayList<Commit> existingCommits = GitManager.getAllCommits();
         existingCommits = reverseArrayList(existingCommits);
 
         sender.sendMessage("");

@@ -4,11 +4,13 @@ import me.ranzeplay.mcgit.Main;
 import me.ranzeplay.mcgit.managers.GitManager;
 import me.ranzeplay.mcgit.managers.zip.ZipManager;
 import me.ranzeplay.mcgit.models.Commit;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public class CommitCommand {
@@ -31,23 +33,29 @@ public class CommitCommand {
         long operationStartTime = System.nanoTime();
 
         Commit commit = GitManager.makeCommit(args[1], execPlayer, targetWorld);
-
         if (targetWorld == null) {
-            sender.sendMessage(ChatColor.RED + "World not found, it might be deleted");
+            sender.sendMessage(ChatColor.RED + "Base world (overworld) not found");
             return;
         }
 
+
+        // Run Save-All command on server console to save all worlds
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "save-all");
+
+        Bukkit.savePlayers();
         CompletableFuture.runAsync(() -> {
             if (Main.Instance.getConfig().getBoolean("compressNetherWorldByDefault")) {
+                World netherWorld = Bukkit.getWorld(targetWorld.getName() + "_nether");
                 try {
-                    ZipManager.zipWorld(targetWorld.getName().replaceAll("_nether", ""), commit.getCommitId().toString().replace("-", ""));
+                    ZipManager.zipWorld(Objects.requireNonNull(netherWorld).getName(), commit.getCommitId().toString().replace("-", ""));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            if (Main.Instance.getConfig().getBoolean("compressTheEndByDefault")) {
+            if (Main.Instance.getConfig().getBoolean("compressTheEndWorldByDefault")) {
+                World theEndWorld = Bukkit.getWorld(targetWorld.getName() + "_the_end");
                 try {
-                    ZipManager.zipWorld(targetWorld.getName().replaceAll("_the_end", ""), commit.getCommitId().toString().replace("-", ""));
+                    ZipManager.zipWorld(Objects.requireNonNull(theEndWorld).getName(), commit.getCommitId().toString().replace("-", ""));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -62,8 +70,8 @@ public class CommitCommand {
             long operationCompleteTime = System.nanoTime();
 
             sender.sendMessage(ChatColor.GREEN + "Commit " + ChatColor.YELLOW + commit.getCommitId().toString() + ChatColor.GREEN + " created successfully!");
-            sender.sendMessage(ChatColor.YELLOW + "Size: " + String.format("%.4f", GitManager.GetCommitTotalSize(commit.getCommitId().toString()) / 1024 / 1024) + "MB");
-            sender.sendMessage(ChatColor.YELLOW + "Time elapsed: " + String.format("%.4f", (double) (operationCompleteTime - operationStartTime) / 1000 / 1000 / 1000) + " seconds");
+            sender.sendMessage(ChatColor.GREEN + "Size: " + ChatColor.YELLOW + String.format("%.4f", GitManager.GetCommitTotalSize(commit.getCommitId().toString()) / 1024 / 1024) + "MB");
+            sender.sendMessage(ChatColor.GREEN + "Time elapsed: " + ChatColor.YELLOW + String.format("%.4f", (double) (operationCompleteTime - operationStartTime) / 1000 / 1000 / 1000) + " seconds");
         });
     }
 }
