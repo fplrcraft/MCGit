@@ -4,12 +4,17 @@ import me.ranzeplay.mcgit.Constants;
 import me.ranzeplay.mcgit.Main;
 import me.ranzeplay.mcgit.managers.zip.ZipManager;
 import me.ranzeplay.mcgit.models.Commit;
-import org.bukkit.command.CommandSender;
 
 import java.io.IOException;
 
 public class BackupsManager {
-    public static void Execute(CommandSender sender, String commitId) throws IOException {
+    /**
+     * Will not check if the commitId is valid
+     *
+     * @param commitId Must be valid
+     * @throws IOException When unzip operation fail
+     */
+    public static void Execute(String commitId) throws IOException {
         Commit commit = new Commit(null, null, null);
         if (Main.Instance.getConfig().getBoolean("compressNetherWorldByDefault")) {
             ZipManager.replaceWorldFromBackup(commit.getWorld().getName().replaceAll("_nether", "") + "_nether", commit.getCommitId().toString().replace("-", ""));
@@ -35,6 +40,9 @@ public class BackupsManager {
      */
     public static boolean Abort() {
         if (Constants.IsScheduled) {
+            Main.Instance.getConfig().set("nextRollback", "unset");
+            Main.Instance.saveConfig();
+
             Constants.IsScheduled = false;
             return true;
         }
