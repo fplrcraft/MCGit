@@ -47,6 +47,10 @@ public class CommandCompleter implements TabCompleter {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
+
+                            if(s.get(0).equalsIgnoreCase("rollback")) {
+                                availableChoices.add("abort");
+                            }
                         }
                     } else if (s.size() == 2) {
                         if (s.get(0).equalsIgnoreCase("view") && s.get(1).equalsIgnoreCase("commit")) {

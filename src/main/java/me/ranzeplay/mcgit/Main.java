@@ -29,13 +29,12 @@ public final class Main extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new CommitsPanel(), this);
 
-        Constants.IsBackingUp = false;
+        // Do rollback operation if there's already scheduled a rollback
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        Constants.IsBackingUp = false;
     }
 
     private void initialPluginFiles() throws IOException {

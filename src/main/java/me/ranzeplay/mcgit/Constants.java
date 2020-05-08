@@ -13,5 +13,5 @@ public class Constants {
     // Git File Configurations
     public static final File CommitsDirectory = new File(Constants.ConfigDirectory + "/Commits");
 
-    public static boolean IsBackingUp;
+    public static boolean IsScheduled = false;
 }
