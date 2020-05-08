@@ -5,26 +5,27 @@ import me.ranzeplay.mcgit.Main;
 import me.ranzeplay.mcgit.managers.zip.ZipManager;
 import me.ranzeplay.mcgit.models.Commit;
 
-import java.io.IOException;
+import java.io.File;
 
 public class BackupsManager {
     /**
      * Will not check if the commitId is valid
      *
      * @param commitId Must be valid
-     * @throws IOException When unzip operation fail
+     * @throws Exception When unzip operation fail
      */
-    public static void Execute(String commitId) throws IOException {
-        Commit commit = new Commit(null, null, null);
+    public static void Execute(String commitId) throws Exception {
+        Commit commit = new Commit(null, null, null).getFromBukkitYmlFile(new File(Constants.ConfigDirectory + "/Commits/" + commitId +".yml"));
         if (Main.Instance.getConfig().getBoolean("compressNetherWorldByDefault")) {
-            ZipManager.replaceWorldFromBackup(commit.getWorld().getName().replaceAll("_nether", "") + "_nether", commit.getCommitId().toString().replace("-", ""));
+            ZipManager.replaceWorldFromBackup(commit.getWorldName().replaceAll("_nether", "").replaceAll("_the_end", "") + "_nether",
+                    commit.getCommitId().toString().replace("-", ""));
         }
-        if (Main.Instance.getConfig().getBoolean("compressTheEndByDefault")) {
-            ZipManager.replaceWorldFromBackup(commit.getWorld().getName().replaceAll("_nether", "").replaceAll("_the_end", "") + "_the_end",
+        if (Main.Instance.getConfig().getBoolean("compressTheEndWorldByDefault")) {
+            ZipManager.replaceWorldFromBackup(commit.getWorldName().replaceAll("_nether", "").replaceAll("_the_end", "") + "_the_end",
                     commit.getCommitId().toString().replace("-", ""));
         }
 
-        ZipManager.replaceWorldFromBackup(commit.getWorld().getName().replaceAll("_the_end", ""), commitId.replace("-", ""));
+        ZipManager.replaceWorldFromBackup(commit.getWorldName().replaceAll("_nether", "").replaceAll("_the_end", ""), commitId.replace("-", ""));
     }
 
     public static void Schedule(String commitId) {

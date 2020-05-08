@@ -2,6 +2,7 @@ package me.ranzeplay.mcgit.models;
 
 import me.ranzeplay.mcgit.Constants;
 import me.ranzeplay.mcgit.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -50,11 +51,15 @@ public class Commit {
     }
 
     public Player getPlayer() {
-        return Main.Instance.getServer().getOfflinePlayer(this.playerUUID).getPlayer();
+        return Bukkit.getOfflinePlayer(this.playerUUID).getPlayer();
     }
 
     public World getWorld() {
-        return Main.Instance.getServer().getWorld(worldName);
+        return Bukkit.getWorld(worldName);
+    }
+
+    public String getWorldName() {
+        return this.worldName;
     }
 
 

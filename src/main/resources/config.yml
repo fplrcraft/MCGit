@@ -1,5 +1,5 @@
 compressNetherWorldByDefault: true
 compressTheEndWorldByDefault: true
 
-# Tempo
-nextRollback: temp
+# Temporary section, but do not remove
+nextRollback: unset
