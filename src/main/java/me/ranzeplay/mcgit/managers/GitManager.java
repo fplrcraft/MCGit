@@ -26,7 +26,7 @@ public class GitManager {
         return commit;
     }
 
-    public static ArrayList<Commit> commitsList() throws ParseException {
+    public static ArrayList<Commit> getAllCommits() throws ParseException {
         ArrayList<Commit> list = new ArrayList<>();
         File files = Constants.CommitsDirectory;
         if (Objects.requireNonNull(files.listFiles()).length == 0) return list;
@@ -49,7 +49,7 @@ public class GitManager {
     public static double GetCommitTotalSize(String commitId) {
         double totalSize = 0;
 
-        File commitFile = new File(Constants.BackupDirectory + "/" + commitId.replace("-", ""));
+        File commitFile = new File(Constants.BackupsDirectory + "/" + commitId.replace("-", ""));
         for (File file : Objects.requireNonNull(commitFile.listFiles())) {
             totalSize += file.length();
         }

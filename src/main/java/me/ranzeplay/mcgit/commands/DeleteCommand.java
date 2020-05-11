@@ -1,5 +1,6 @@
 package me.ranzeplay.mcgit.commands;
 
+import me.ranzeplay.mcgit.Constants;
 import me.ranzeplay.mcgit.Main;
 import me.ranzeplay.mcgit.managers.zip.ZipManager;
 import org.bukkit.ChatColor;
@@ -34,7 +35,7 @@ public class DeleteCommand {
         long operationStartTime = System.nanoTime();
         CompletableFuture.runAsync(() -> {
             ZipManager.deleteDirectory(Main.Instance.getDataFolder().getAbsolutePath() + "/Backups/" + commitId.replace("-", ""));
-            new File(Main.Instance.getDataFolder().getAbsolutePath() + "/Config/Commits/" + commitId.replace("-", "") + ".yml").delete();
+            new File(Constants.ConfigDirectory + "/Commits/" + commitId + ".yml").delete();
         }).whenComplete((t, u) -> {
             long operationFinishTime = System.nanoTime();
             sender.sendMessage(ChatColor.AQUA + "Operation completed in " + String.format("%.4f", (double) (operationFinishTime - operationStartTime) / 1000 / 1000 / 1000) + " second(s)");

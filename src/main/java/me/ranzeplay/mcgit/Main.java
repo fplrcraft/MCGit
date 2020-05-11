@@ -3,12 +3,14 @@ package me.ranzeplay.mcgit;
 import me.ranzeplay.mcgit.commands.CommandCompleter;
 import me.ranzeplay.mcgit.commands.CommandExec;
 import me.ranzeplay.mcgit.gui.CommitsPanel;
+import me.ranzeplay.mcgit.managers.BackupsManager;
 import me.ranzeplay.mcgit.managers.config.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public final class Main extends JavaPlugin {
 
@@ -29,19 +31,30 @@ public final class Main extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new CommitsPanel(), this);
 
-        Constants.IsBackingUp = false;
+        // Do rollback operation if there's already scheduled a rollback
+        String rollbackCommitId = getConfig().getString("nextRollback");
+        if (!Objects.requireNonNull(rollbackCommitId).equalsIgnoreCase("unset")) {
+            getServer().getLogger().log(Level.INFO, "Pending rollback found, executing... (" + rollbackCommitId + ")");
+            try {
+                BackupsManager.Execute(rollbackCommitId);
+                getConfig().set("nextRollback", "unset");
+                saveConfig();
+            } catch (Exception e) {
+                e.printStackTrace();
+                getServer().getLogger().log(Level.WARNING, "Rollback operation failed! Please check server log");
+            }
+        }
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        Constants.IsBackingUp = false;
     }
 
     private void initialPluginFiles() throws IOException {
         saveDefaultConfig();
 
-        if (!Constants.BackupDirectory.exists()) Constants.BackupDirectory.mkdirs();
+        if (!Constants.BackupsDirectory.exists()) Constants.BackupsDirectory.mkdirs();
         if (!Constants.CommitsDirectory.exists()) Constants.CommitsDirectory.mkdirs();
 
         ConfigManager.CreateConfigurations();

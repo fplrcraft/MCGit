@@ -33,6 +33,7 @@ public class HelpCommand {
         sender.sendMessage("");
         sender.sendMessage("---------[MCGit : Command Helper]---------");
         sender.sendMessage(ChatColor.YELLOW + "/mcgit rollback <commitId>" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Rollback to a specific commit");
+        sender.sendMessage(ChatColor.YELLOW + "/mcgit rollback abort" + ChatColor.WHITE + " - " + ChatColor.GREEN + "Abort the rollback operation");
         sender.sendMessage("");
     }
 

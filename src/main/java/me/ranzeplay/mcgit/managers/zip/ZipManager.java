@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class ZipManager {
     public static void zipWorld(String worldName, String backupId) throws Exception {
-        File destinationDirectory = new File(Constants.BackupDirectory.getAbsolutePath() + "/" + backupId);
+        File destinationDirectory = new File(Constants.BackupsDirectory.getAbsolutePath() + "/" + backupId);
         // System.out.println("Destination: " + destinationDirectory.getAbsolutePath());
         if (!destinationDirectory.exists()) destinationDirectory.mkdirs();
 
@@ -23,7 +23,7 @@ public class ZipManager {
         if (worldRootDirectory.exists()) {
             World world = Bukkit.getWorld(worldName);
             if (world != null) {
-                String zipFilePath = serverRootDirectory.getAbsolutePath() + "/" + (backupId + "-" + worldName + ".zip");
+                String zipFilePath = destinationDirectory.getAbsolutePath() + "/" + (backupId + "-" + worldName + ".zip");
                 ZipFiles.ZipProg(worldRootDirectory, zipFilePath);
 
                 File sourceZip = new File(zipFilePath);
@@ -31,7 +31,7 @@ public class ZipManager {
                     throw new FileNotFoundException("Zip file not found!");
                 }
 
-                sourceZip.renameTo(new File(destinationDirectory, sourceZip.getName()));
+                // sourceZip.renameTo(new File(destinationDirectory, sourceZip.getName()));
             } else {
                 throw new Exception("World not found!");
             }
@@ -40,14 +40,13 @@ public class ZipManager {
         }
     }
 
-    public static void unzipWorldFromBackup(String worldName, String backupId) throws IOException {
+    public static void replaceWorldFromBackup(String worldName, String backupId) throws IOException {
         File serverRootDirectory = (Main.Instance.getDataFolder().getParentFile().getAbsoluteFile()).getParentFile();
-        File worldRootDirectory = new File(serverRootDirectory + "/" + worldName);
 
         // Delete world directory recursively
-        deleteDirectory(worldRootDirectory.getAbsolutePath());
+        deleteDirectory(serverRootDirectory.getAbsolutePath() + "/" + worldName);
 
-        UnzipFiles.UnzipToDirectory(new File(Constants.BackupDirectory.getAbsolutePath() + "/" + backupId + "/" + (backupId + "-" + worldName + ".zip")), new File(serverRootDirectory.getAbsolutePath() + "/" + worldName));
+        UnzipFiles.UnzipToDirectory(new File(Constants.BackupsDirectory.getAbsolutePath() + "/" + backupId + "/" + (backupId + "-" + worldName + ".zip")), new File(serverRootDirectory.getAbsolutePath()));
     }
 
     public static void deleteDirectory(String path) {

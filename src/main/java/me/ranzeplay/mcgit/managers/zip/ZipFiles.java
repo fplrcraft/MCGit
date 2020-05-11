@@ -4,54 +4,47 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ZipFiles {
-    final List<String> filesListInDir = new ArrayList<>();
+    public static void ZipProg(File directory, String outputName) throws IOException {
+        FileOutputStream fos = new FileOutputStream(outputName);
+        ZipOutputStream zipOut = new ZipOutputStream(fos);
 
-    public static void ZipProg(File directory, String outputName) {
-        ZipFiles zipFiles = new ZipFiles();
-        zipFiles.zipDirectory(directory, outputName);
+        zipDirectory(directory, directory.getName(), zipOut);
+
+        zipOut.close();
+        fos.close();
     }
 
-    private void zipDirectory(File dir, String zipDirName) {
-        try {
-            populateFilesList(dir);
-            //now zip files one by one
-            //create ZipOutputStream to write to the zip file
-            FileOutputStream fos = new FileOutputStream(zipDirName);
-            ZipOutputStream zos = new ZipOutputStream(fos);
-            for (String filePath : filesListInDir) {
-                //for ZipEntry we need to keep only relative file path, so we used substring on absolute path
-                ZipEntry ze = new ZipEntry(filePath.substring(dir.getAbsolutePath().length() + 1));tt
-                zos.putNextEntry(ze);
-                //read the file and write to ZipOutputStream
-                FileInputStream fis = new FileInputStream(filePath);
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = fis.read(buffer)) > 0) {
-                    zos.write(buffer, 0, len);
-                }
-                zos.closeEntry();
-                fis.close();
+    private static void zipDirectory(File fileToZip, String fileName, ZipOutputStream zipOut) throws IOException {
+        if (fileToZip.isHidden()) {
+            return;
+        }
+        if (fileToZip.isDirectory()) {
+            if (fileName.endsWith("/")) {
+                zipOut.putNextEntry(new ZipEntry(fileName));
+            } else {
+                zipOut.putNextEntry(new ZipEntry(fileName + "/"));
             }
-            zos.close();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            zipOut.closeEntry();
+            File[] children = fileToZip.listFiles();
+            for (File childFile : Objects.requireNonNull(children)) {
+                zipDirectory(childFile, fileName + "/" + childFile.getName(), zipOut);
+            }
+            return;
         }
-    }
-
-    private void populateFilesList(File dir) {
-        File[] files = dir.listFiles();
-        for (File file : Objects.requireNonNull(files)) {
-            if (file.isFile()) filesListInDir.add(file.getAbsolutePath());
-            else populateFilesList(file);
+        FileInputStream fis = new FileInputStream(fileToZip);
+        ZipEntry zipEntry = new ZipEntry(fileName);
+        zipOut.putNextEntry(zipEntry);
+        byte[] bytes = new byte[1024];
+        int length;
+        while ((length = fis.read(bytes)) >= 0) {
+            zipOut.write(bytes, 0, length);
         }
+        fis.close();
     }
 
 }
