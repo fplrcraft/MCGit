@@ -2,6 +2,7 @@ package me.ranzeplay.mcgit.commands;
 
 import me.ranzeplay.mcgit.Constants;
 import me.ranzeplay.mcgit.Main;
+import me.ranzeplay.mcgit.managers.MessageTemplateManager;
 import me.ranzeplay.mcgit.managers.zip.ZipManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -24,9 +25,15 @@ public class DeleteCommand {
     }
 
     private static void RequestConfirm(CommandSender sender, String commitId) throws ParseException {
+        sender.sendMessage("");
+        sender.sendMessage(MessageTemplateManager.title(10, "Request Confirm"));
+
         sender.sendMessage(ChatColor.AQUA + "You are requesting to delete a commit and its file, you need to confirm your action!");
         ViewCommand.ViewCommit(sender, commitId);
         sender.sendMessage(ChatColor.AQUA + "Use \"/mcgit delete " + commitId + " confirm\" to confirm delete operation...");
+
+        sender.sendMessage(MessageTemplateManager.ending(15));
+        sender.sendMessage("");
     }
 
     private static void Process(CommandSender sender, String commitId) {

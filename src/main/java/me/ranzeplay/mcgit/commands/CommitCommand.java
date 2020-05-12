@@ -2,6 +2,7 @@ package me.ranzeplay.mcgit.commands;
 
 import me.ranzeplay.mcgit.Main;
 import me.ranzeplay.mcgit.managers.GitManager;
+import me.ranzeplay.mcgit.managers.MessageTemplateManager;
 import me.ranzeplay.mcgit.managers.zip.ZipManager;
 import me.ranzeplay.mcgit.models.Commit;
 import org.bukkit.Bukkit;
@@ -69,9 +70,15 @@ public class CommitCommand {
         }).whenComplete((t, u) -> {
             long operationCompleteTime = System.nanoTime();
 
+            sender.sendMessage("");
+            sender.sendMessage(MessageTemplateManager.title(10, "Commit Created"));
+
             sender.sendMessage(ChatColor.GREEN + "Commit " + ChatColor.YELLOW + commit.getCommitId().toString() + ChatColor.GREEN + " created successfully!");
             sender.sendMessage(ChatColor.GREEN + "Size: " + ChatColor.YELLOW + String.format("%.4f", GitManager.GetCommitTotalSize(commit.getCommitId().toString()) / 1024 / 1024) + "MB");
             sender.sendMessage(ChatColor.GREEN + "Time elapsed: " + ChatColor.YELLOW + String.format("%.4f", (double) (operationCompleteTime - operationStartTime) / 1000 / 1000 / 1000) + " seconds");
+
+            sender.sendMessage(MessageTemplateManager.ending(15));
+            sender.sendMessage("");
         });
     }
 }

@@ -2,6 +2,7 @@ package me.ranzeplay.mcgit.commands;
 
 import me.ranzeplay.mcgit.Constants;
 import me.ranzeplay.mcgit.managers.GitManager;
+import me.ranzeplay.mcgit.managers.MessageTemplateManager;
 import me.ranzeplay.mcgit.models.Commit;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -45,7 +46,8 @@ public class ViewCommand {
         Commit commit = new Commit(null, null, null).getFromBukkitYmlFile(commitFile);
 
         sender.sendMessage("");
-        sender.sendMessage("----------[MCGit : Commit Details]----------");
+        // sender.sendMessage("----------[MCGit : Commit Details]----------");
+        sender.sendMessage(MessageTemplateManager.title(12, "Commit Details"));
         sender.sendMessage(ChatColor.YELLOW + "Commit Id: " + ChatColor.GREEN + commit.getCommitId());
         sender.sendMessage(ChatColor.YELLOW + "Description: " + ChatColor.GREEN + commit.getDescription());
         sender.sendMessage(ChatColor.YELLOW + "Commit Time: " + ChatColor.GREEN + commit.getCreateTime());
@@ -58,6 +60,7 @@ public class ViewCommand {
         actionsMessage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/mcgit rollback " + commit.getCommitId().toString()));
         sender.spigot().sendMessage(actionsMessage);
 
+        sender.sendMessage(MessageTemplateManager.ending(17));
         sender.sendMessage("");
     }
 
@@ -66,7 +69,8 @@ public class ViewCommand {
         existingCommits = reverseArrayList(existingCommits);
 
         sender.sendMessage("");
-        sender.sendMessage("---------[MCGit : Existing Commits]---------");
+        // sender.sendMessage("---------[MCGit : Existing Commits]---------");
+        sender.sendMessage(MessageTemplateManager.title(10, "Existing Commits"));
         for (Commit commit : existingCommits) {
             TextComponent detailsMessage = new TextComponent();
             detailsMessage.setText(ChatColor.GREEN + commit.getDescription() + " " + ChatColor.YELLOW + Constants.DateFormat.format(commit.getCreateTime()));
@@ -76,6 +80,8 @@ public class ViewCommand {
         if (existingCommits.size() == 0) {
             sender.sendMessage(ChatColor.AQUA + "Nothing to show");
         }
+
+        sender.sendMessage(MessageTemplateManager.ending(17));
         sender.sendMessage("");
     }
 

@@ -4,6 +4,7 @@ import me.ranzeplay.mcgit.Constants;
 import me.ranzeplay.mcgit.Main;
 import me.ranzeplay.mcgit.managers.BackupsManager;
 import me.ranzeplay.mcgit.managers.GitManager;
+import me.ranzeplay.mcgit.managers.MessageTemplateManager;
 import me.ranzeplay.mcgit.models.Commit;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -32,9 +33,15 @@ public class RollbackCommand {
     }
 
     private static void RequestConfirm(CommandSender sender, String commitId) throws ParseException {
+        sender.sendMessage("");
+        sender.sendMessage(MessageTemplateManager.title(10, "Request Confirm"));
+
         sender.sendMessage(ChatColor.AQUA + "You are requesting to rollback the server, you need to confirm your action!");
         ViewCommand.ViewCommit(sender, commitId);
         sender.sendMessage(ChatColor.AQUA + "Use \"/mcgit rollback " + commitId + " confirm\" to confirm rollback operation...");
+
+        sender.sendMessage(MessageTemplateManager.ending(15));
+        sender.sendMessage("");
     }
 
     private static void Process(CommandSender sender, String commitId) throws Exception {
@@ -53,7 +60,8 @@ public class RollbackCommand {
 
         for (Player targetPlayer : Main.Instance.getServer().getOnlinePlayers()) {
             targetPlayer.sendMessage("");
-            targetPlayer.sendMessage("-----[MCGit : Rollback Operation Summary]-----");
+            // targetPlayer.sendMessage("-----[MCGit : Rollback Operation Summary]-----");
+            targetPlayer.sendMessage(MessageTemplateManager.title(7, "Rollback Operation Summary"));
 
             TextComponent text = new TextComponent();
             text.setText(ChatColor.YELLOW + "Target CommitId: " + ChatColor.GREEN + commitId);
@@ -61,13 +69,14 @@ public class RollbackCommand {
             targetPlayer.spigot().sendMessage(text);
 
             targetPlayer.sendMessage(ChatColor.YELLOW + "Triggered by: " + ChatColor.GREEN + sender.getName());
-            targetPlayer.sendMessage(ChatColor.AQUA + "Rollback will be start on next server start automatically");
+            targetPlayer.sendMessage(ChatColor.AQUA + "Rollback will be start on next server startup automatically");
 
             TextComponent actionsMessage = new TextComponent();
             actionsMessage.setText(ChatColor.YELLOW + "Use " + ChatColor.GREEN + "/mcgit rollback abort" + ChatColor.YELLOW + " to abort rollback");
             actionsMessage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/mcgit rollback abort"));
             targetPlayer.spigot().sendMessage(actionsMessage);
 
+            targetPlayer.sendMessage(MessageTemplateManager.ending(15));
             targetPlayer.sendMessage("");
         }
 
